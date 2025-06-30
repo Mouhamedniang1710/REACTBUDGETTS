@@ -1,28 +1,16 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import type { RevenuType } from "../App";
 
-interface RevenuType {
-  id: number;
-  titre: string;
-  montant: number;
+interface RevenuProps {
+  revenus: RevenuType[];
+  setRevenus: React.Dispatch<React.SetStateAction<RevenuType[]>>;
 }
 
-const Revenu: React.FC = () => {
-  const [revenus, setRevenus] = useState<RevenuType[]>([]);
+const Revenu: React.FC<RevenuProps> = ({ revenus, setRevenus }) => {
   const [titre, setTitre] = useState("");
   const [montant, setMontant] = useState("");
-  const [showModal, setShowModal] = useState(false); // état de la modale
-
-  useEffect(() => {
-    const data = localStorage.getItem("revenus");
-    if (data) {
-      setRevenus(JSON.parse(data));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("revenus", JSON.stringify(revenus));
-  }, [revenus]);
+  const [showModal, setShowModal] = useState(false);
 
   const ajouterRevenu = () => {
     if (!titre.trim() || isNaN(parseFloat(montant))) {
@@ -30,7 +18,7 @@ const Revenu: React.FC = () => {
       return;
     }
 
-    const nouveau = {
+    const nouveau: RevenuType = {
       id: Date.now(),
       titre: titre.trim(),
       montant: parseFloat(montant),
@@ -39,7 +27,7 @@ const Revenu: React.FC = () => {
     setRevenus((prev) => [...prev, nouveau]);
     setTitre("");
     setMontant("");
-    setShowModal(false); 
+    setShowModal(false);
   };
 
   const supprimerRevenu = (id: number) => {
@@ -48,15 +36,13 @@ const Revenu: React.FC = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <h2 className="text-xl  text-[#D1C000] mb-4">Liste des Revenus</h2>
-
+      <h2 className="text-xl text-[#D1C000] mb-4">Liste des Revenus</h2>
 
       {/* Modale */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white w-full max-w-md rounded-lg shadow-lg p-6">
             <h3 className="text-xl font-semibold mb-4">Nouveau Revenu</h3>
-
             <input
               type="text"
               value={titre}
@@ -71,7 +57,6 @@ const Revenu: React.FC = () => {
               placeholder="Montant"
               className="border p-2 rounded w-full mb-4"
             />
-
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => setShowModal(false)}
@@ -96,7 +81,7 @@ const Revenu: React.FC = () => {
           <tr>
             <th className="bg-[#0C5E69] text-white p-3 border text-center">Titre</th>
             <th className="bg-[#0C5E69] text-white p-3 border text-center">Montant</th>
-            <th className="bg-[#0C5E69] text-white p-3 border  text-center">Actions</th>
+            <th className="bg-[#0C5E69] text-white p-3 border text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -124,15 +109,19 @@ const Revenu: React.FC = () => {
           )}
         </tbody>
       </table>
-       <button
-        onClick={() => setShowModal(true)}
-        className="bg-[#D1C000] text-white px-3 py-3 rounded text-lg  hover:bg-yellow-400 "
-      >
-        Ajouter un Revenu
-      </button>
+
+      <div className="mt-4 flex justify-end">
+        <button
+          onClick={() => setShowModal(true)}
+          className="bg-[#D1C000] text-white px-4 py-2 rounded text-lg hover:bg-yellow-400"
+        >
+          Ajouter un Revenu
+        </button>
+      </div>
     </div>
   );
 };
 
 export default Revenu;
+
 

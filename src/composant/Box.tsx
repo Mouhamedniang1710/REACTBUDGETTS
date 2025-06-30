@@ -1,41 +1,12 @@
+import React from "react";
+import type { DepenseType, RevenuType } from "../App";
 
-import React, { useEffect, useState } from "react";
-
-interface RevenuType {
-  id: number;
-  titre: string;
-  montant: number;
+interface BoxProps {
+  revenus: RevenuType[];
+  depenses: DepenseType[];
 }
 
-interface DepenseType {
-  id: number;
-  titre: string;
-  montant: number;
-}
-
-const Box: React.FC = () => {
-  const [revenus, setRevenus] = useState<RevenuType[]>([]);
-  const [depenses, setDepenses] = useState<DepenseType[]>([]);
-
-  useEffect(() => {
-    const updateData = () => {
-      const dataRevenus = localStorage.getItem("revenus");
-      const dataDepenses = localStorage.getItem("depenses");
-
-      if (dataRevenus) setRevenus(JSON.parse(dataRevenus));
-      if (dataDepenses) setDepenses(JSON.parse(dataDepenses));
-    };
-
-    // Charger au montage du composant
-    updateData();
-
-    // Recharger automatiquement
-    const interval = setInterval(updateData, 100);
-
-    // Nettoyage à la destruction du composant
-    return () => clearInterval(interval);
-  }, []);
-
+const Box: React.FC<BoxProps> = ({ revenus, depenses }) => {
   const totalRevenus = revenus.reduce((acc, rev) => acc + rev.montant, 0);
   const totalDepenses = depenses.reduce((acc, dep) => acc + dep.montant, 0);
   const solde = totalRevenus - totalDepenses;

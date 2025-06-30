@@ -1,27 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import type { DepenseType } from "../App";
 
-interface DepenseType {
-  id: number;
-  titre: string;
-  montant: number;
+interface DepenseProps {
+  depenses: DepenseType[];
+  setDepenses: React.Dispatch<React.SetStateAction<DepenseType[]>>;
 }
 
-const Depense: React.FC = () => {
-  const [depenses, setDepenses] = useState<DepenseType[]>([]);
+const Depense: React.FC<DepenseProps> = ({ depenses, setDepenses }) => {
   const [titre, setTitre] = useState("");
   const [montant, setMontant] = useState("");
   const [showModal, setShowModal] = useState(false);
-
-  useEffect(() => {
-    const data = localStorage.getItem("depenses");
-    if (data) {
-      setDepenses(JSON.parse(data));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("depenses", JSON.stringify(depenses));
-  }, [depenses]);
 
   const ajouterDepense = () => {
     if (!titre.trim() || isNaN(parseFloat(montant))) {
@@ -29,7 +17,7 @@ const Depense: React.FC = () => {
       return;
     }
 
-    const nouvelle = {
+    const nouvelle: DepenseType = {
       id: Date.now(),
       titre: titre.trim(),
       montant: parseFloat(montant),
@@ -47,8 +35,7 @@ const Depense: React.FC = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6 bg-white shadow-lg rounded-lg">
-    
-      <h2 className="text-xl   text-[#D1C000] mb-6">Liste des Dépenses</h2>
+      <h2 className="text-xl text-[#D1C000] mb-6">Liste des Dépenses</h2>
 
       {/* Modal */}
       {showModal && (
@@ -88,7 +75,7 @@ const Depense: React.FC = () => {
       )}
 
       {/* Tableau */}
-   <table className="w-full border text-left text-lg border-collapse ">
+      <table className="w-full border text-left text-lg border-collapse">
         <thead>
           <tr>
             <th className="bg-[#0C5E69] text-white p-3 border text-center">Titre</th>
@@ -109,34 +96,29 @@ const Depense: React.FC = () => {
                   >
                     Supprimer
                   </button>
-                 
-
                 </td>
               </tr>
             ))
-            
           ) : (
             <tr>
-              <td colSpan={3} className="">
-
+              <td colSpan={3} className="text-center py-4 text-gray-500">
+                Aucune dépense enregistrée.
               </td>
             </tr>
           )}
-          
         </tbody>
       </table>
+
+      <div className="mt-4 flex justify-end">
         <button
           onClick={() => setShowModal(true)}
-          className="bg-[#D1C000] text-white px-3 py-3 rounded text-lg  hover:bg-yellow-400 "
+          className="bg-[#D1C000] text-white px-4 py-2 rounded text-lg hover:bg-yellow-400"
         >
           Ajouter Dépense
         </button>
-
+      </div>
     </div>
-    
   );
 };
-
-
 
 export default Depense;
