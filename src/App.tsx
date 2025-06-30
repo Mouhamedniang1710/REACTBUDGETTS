@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+
 import Home from "./composant/Home";
 import Box from "./composant/Box";
 import Depense from "./composant/Depense";
 import Revenu from "./composant/Revenu";
+import { useEffect, useState } from "react";
 
 export interface RevenuType {
   id: number;

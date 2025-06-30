@@ -103,14 +103,14 @@ const Revenu: React.FC<RevenuProps> = ({ revenus, setRevenus }) => {
           ) : (
             <tr>
               <td colSpan={3} className="text-center py-4 text-gray-500">
-                Aucun revenu ajouté.
+                
               </td>
             </tr>
           )}
         </tbody>
       </table>
 
-      <div className="mt-4 flex justify-end">
+      <div className="mt-4 ">
         <button
           onClick={() => setShowModal(true)}
           className="bg-[#D1C000] text-white px-4 py-2 rounded text-lg hover:bg-yellow-400"

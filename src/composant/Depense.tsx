@@ -102,17 +102,17 @@ const Depense: React.FC<DepenseProps> = ({ depenses, setDepenses }) => {
           ) : (
             <tr>
               <td colSpan={3} className="text-center py-4 text-gray-500">
-                Aucune dépense enregistrée.
+                
               </td>
             </tr>
           )}
         </tbody>
       </table>
 
-      <div className="mt-4 flex justify-end">
+      <div className="mt-4 ">
         <button
           onClick={() => setShowModal(true)}
-          className="bg-[#D1C000] text-white px-4 py-2 rounded text-lg hover:bg-yellow-400"
+          className="bg-[#D1C000] text-white px-4 py-2 rounded text-lg hover:bg-yellow-400 "
         >
           Ajouter Dépense
         </button>
